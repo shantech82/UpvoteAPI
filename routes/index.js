@@ -8,6 +8,7 @@ var email = require('../email')
 var md = require('../masterdata')
 var cy = require('../company')
 var fu = require('../fileupload');
+var cv = require('../companyvideo');
 
 router.get('/api/Registrations',us.getAllRegistrations);
 router.get('/api/Registration/:id',us.getSingleRegistration);
@@ -29,9 +30,18 @@ router.get('/api/getStateCountry',md.getStateCountry);
 router.get('/api/getAllCompany',cy.getAllCompany);
 router.get('/api/getCompanybyID/:id',cy.getCompanybyID);
 router.get('/api/getCompanybyName',cy.getCompanybyName);
+router.get('/api/getCompanyIDByUser/:id',cy.getCompanyIDByUser);
 router.post('/api/createCompany',cy.createCompany);
-
+//image log
 router.post('/api/uploadCompanyLogo',fu.uploadCompanyLogo);
 router.get('/api/getCompanyLogo',fu.getCompanyLogo);
+
+//company videos APIs
+router.get('/api/getAllVidoes',cv.getAllVidoes);
+router.get('/api/getVideobyID/:id',cv.getVideobyID);
+router.get('/api/getVidoesByCompany/:id',cv.getVidoesByCompany);
+router.post('/api/createCompanyvideo',cv.createCompanyvideo);
+router.get('/api/getVideoByUrl/',cv.getVideoByUrl);
+router.delete('/api/deleteVideobyID/:id',cv.deleteVideobyID);
 
 module.exports = router;

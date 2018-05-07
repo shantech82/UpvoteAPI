@@ -6,6 +6,7 @@ module.exports = {
     getCompanybyID:getCompanybyID,
     getCompanybyName:getCompanybyName,
     createCompany:createCompany,
+    getCompanyIDByUser:getCompanyIDByUser,
 }
 
 function getAllCompany(req,res,next){
@@ -25,12 +26,28 @@ function getAllCompany(req,res,next){
 
 function getCompanybyID(req,res,next){
     var companyid = parseInt(req.params.id);
-    db.one('select * from company where id = $1',companyid)
+    db.one('select co.id,co.companyname,co.email, co.phonenumber,co.aboutcomapny,co.whitepapaer,co.website,co.address1,co.address2,co.userid,co.imagename, c.name as cityname, s.name as statename, cn.name as countryname,co.zip_code from company co inner join cities c on co.city_id = c.id    inner join states s on s.id = co.state_id inner join countries cn on cn.id = co.country_id where co.id =  $1',companyid)
     .then(function(data){
         res.status(200)
         .json({
             status:'success',
             data : data,
+            message : 'single company success'
+        });
+    })
+    .catch(function(err){
+        return next(err);
+    });
+}
+
+function getCompanyIDByUser(req,res,next){
+    var userid = parseInt(req.params.id);
+    db.any('select id from company where userid =  $1',userid)
+    .then(function(data){
+        res.status(200)
+        .json({
+            status:'success',
+            data : data[0],
             message : 'single company success'
         });
     })
@@ -70,12 +87,13 @@ function createCompany(req, res, next) {
     req.body.city_id = parseInt(req.body.city_id);
     req.body.state_id = parseInt(req.body.state_id);
     req.body.country_id = parseInt(req.body.country_id);
+    req.body.userid = parseInt(req.body.userid);
 
-    let query = 'insert into company(companyname,email,phonenumber,aboutcomapny,whitepapaer,website,address1,address2,city_id,state_id,country_id,zip_code) values(${companyname},${email},${phonenumber},${aboutcomapny},${whitepapaer},${website},${address1},${address2},${city_id},${state_id},${country_id},${zip_code})'
+    let query = 'insert into company(companyname,email,phonenumber,aboutcomapny,whitepapaer,website,address1,address2,city_id,state_id,country_id,zip_code,userid,imagename) values(${companyname},${email},${phonenumber},${aboutcomapny},${whitepapaer},${website},${address1},${address2},${city_id},${state_id},${country_id},${zip_code},${userid},${imagename})'
     
     db.none(query,req.body)
       .then(function () {
-        db.any("SELECT * FROM company WHERE companyname = $1",req.body.companyname)
+        db.one("select id from company where companyname ilike ${companyname} or email ilike ${email}",req.body)
             .then(function(data){
                 res.status(200)
                 .json({

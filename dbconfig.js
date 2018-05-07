@@ -14,6 +14,14 @@ var connectionstring = {
     password: 'a0780cb77d6e29d0eece2a66dbba193aef6b74cd555f2c230cde5868ba18fe43',
     ssl: true
 };
+
+var localconnectionstring = {
+    host: 'localhost', // server name or IP address;
+    port: 5432,
+    database: 'upvote',
+    user: 'upvoteuser',
+    password: 'upvoteuser'
+};
 var db = pgp(connectionstring);
 
 module.exports =  db;

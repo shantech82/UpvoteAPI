@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/static', express.static(path.join(__dirname, 'uploads')))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -25,7 +25,7 @@ var storage = multer.diskStorage({
         if(err){
              res.json({error_code:1,nperr_desc:err});
             }
-            res.send(file.originalname)
+            res.json(req.file.originalname)
     });
   }
 
