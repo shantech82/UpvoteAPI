@@ -2,23 +2,27 @@ var express = require('express');
 var router = express.Router();
 
 var db = require('../dbconfig');
-var us = require('../users');
+var us = require('../icouserprofile');
 var sp = require('../securepassword')
 var email = require('../email')
 var md = require('../masterdata')
-var cy = require('../company')
+var ico = require('../ICOs')
 var fu = require('../fileupload');
 var cv = require('../companyvideo');
 
-router.get('/api/Registrations',us.getAllRegistrations);
-router.get('/api/Registration/:id',us.getSingleRegistration);
-router.post('/api/SaveRegistration',us.createRegistration);
-router.get('/api/getRegistrationemail',us.getRegistrationemail);
+router.get('/api/Registrations',us.getAllIcoUserProfiles);
+router.get('/api/Registration/:id',us.getSingleIcoUserProfile);
+router.post('/api/SaveRegistration',us.postIcoUserProfile);
+router.get('/api/getRegistrationemail',us.getIcoUserProfileemail);
 router.get('/api/getEncryptPassword',sp.getEncryptPassword);
 router.get('/api/getVerifyPassword',sp.getVerifyPassword);
 router.get('/api/getUserSignIn',us.getUserSignIn);
 router.post('/api/sendActivateMail',email.sendActivateMail);
 router.put('/api/putUserActivate',us.putUserActivate);
+router.put('/api/createICOProfile',us.putIcoUserProfile);
+router.delete('/api/Registration/:id',us.deleteUserProfile);
+router.get('/api/InvestorICOs/:id',us.getUserProfileWithICOs);
+
 
 //master data APIs
 router.get('/api/getCities',md.getCities);
@@ -26,12 +30,10 @@ router.get('/api/getStates',md.getStates);
 router.get('/api/getCountries',md.getCountries);
 router.get('/api/getAllCountries',md.getAllCountries);
 router.get('/api/getStateCountry',md.getStateCountry);
+router.get('/api/getNoOfInvestment',md.getAverageNoOfInvestment);
 //company APIs
-router.get('/api/getAllCompany',cy.getAllCompany);
-router.get('/api/getCompanybyID/:id',cy.getCompanybyID);
-router.get('/api/getCompanybyName',cy.getCompanybyName);
-router.get('/api/getCompanyIDByUser/:id',cy.getCompanyIDByUser);
-router.post('/api/createCompany',cy.createCompany);
+router.get('/api/getAllICOs',ico.getAllICOs);
+
 //image log
 router.post('/api/uploadCompanyLogo',fu.uploadCompanyLogo);
 router.get('/api/getCompanyLogo',fu.getCompanyLogo);

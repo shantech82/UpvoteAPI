@@ -30,7 +30,6 @@ function sendActivateMail(req,res,next){
      };
 
      server.send(message, function(err, message) { 
-         console.log(err || message); 
          res.status(200)
          .json({
            status: 'success',

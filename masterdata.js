@@ -6,7 +6,8 @@ module.exports = {
     getStates:getStates,
     getCountries:getCountries,
     getAllCountries:getAllCountries,
-    getStateCountry:getStateCountry
+    getStateCountry:getStateCountry,
+    getAverageNoOfInvestment:getAverageNoOfInvestment
 }
 
 function getCities(req,res,next){
@@ -14,9 +15,7 @@ function getCities(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             data : data,
-            message : 'getting the city'
         });
     })
     .catch(function(err){
@@ -30,9 +29,7 @@ function getStateCountry(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             data : data,
-            message : 'getting the city'
         });
     })
     .catch(function(err){
@@ -47,9 +44,7 @@ function getStates(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             data : data,
-            message : 'getting the state'
         });
     })
     .catch(function(err){
@@ -63,9 +58,7 @@ function getCountries(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             data : data,
-            message : 'getting the country'
         });
     })
     .catch(function(err){
@@ -78,9 +71,20 @@ function getAllCountries(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             data : data,
-            message : 'getting the country'
+        });
+    })
+    .catch(function(err){
+        return next(err);
+    });
+}
+
+function getAverageNoOfInvestment(req,res,next){
+    db.any('select * from averagenoofinvestment')
+    .then(function(data){
+        res.status(200)
+        .json({
+            data : data,
         });
     })
     .catch(function(err){

@@ -2,53 +2,16 @@ var db = require('./dbconfig');
 
 
 module.exports = {
-    getAllCompany:getAllCompany,
-    getCompanybyID:getCompanybyID,
-    getCompanybyName:getCompanybyName,
-    createCompany:createCompany,
-    getCompanyIDByUser:getCompanyIDByUser,
+    getAllICOs: getAllICOs,
 }
 
-function getAllCompany(req,res,next){
-    db.any('select * from company')
+function getAllICOs(req,res,next){
+    db.any('select ico.id, ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription, ico.iswhitelistjoined, '+
+    'ico.createdon, il.livestreamdate icolivestreamData from icos ico left join ICOsLiveStream il on il.icosid = ico.id')
     .then(function(data){
         res.status(200)
         .json({
-            status : 'success',
-            data : data,
-            message:"all company details received"
-        });
-    })
-    .catch(function(err){
-        return next(err);
-    });
-}
-
-function getCompanybyID(req,res,next){
-    var companyid = parseInt(req.params.id);
-    db.one('select co.id,co.companyname,co.email, co.phonenumber,co.aboutcomapny,co.whitepapaer,co.website,co.address1,co.address2,co.userid,co.imagename, c.name as cityname, s.name as statename, cn.name as countryname,co.zip_code from company co inner join cities c on co.city_id = c.id    inner join states s on s.id = co.state_id inner join countries cn on cn.id = co.country_id where co.id =  $1',companyid)
-    .then(function(data){
-        res.status(200)
-        .json({
-            status:'success',
-            data : data,
-            message : 'single company success'
-        });
-    })
-    .catch(function(err){
-        return next(err);
-    });
-}
-
-function getCompanyIDByUser(req,res,next){
-    var userid = parseInt(req.params.id);
-    db.any('select id from company where userid =  $1',userid)
-    .then(function(data){
-        res.status(200)
-        .json({
-            status:'success',
-            data : data[0],
-            message : 'single company success'
+            companydata : data,
         });
     })
     .catch(function(err){
@@ -63,9 +26,7 @@ function getCompanybyName(req,res,next){
         {
             res.status(200)
             .json({
-                status:'1',
                 companydata : data,
-                message : 'getting company based on name'
             });
         }
         else
@@ -97,9 +58,7 @@ function createCompany(req, res, next) {
             .then(function(data){
                 res.status(200)
                 .json({
-                  status: 'success',
                   companydata : data,
-                  message: 'Inserted one record'
                 });
             });
       })

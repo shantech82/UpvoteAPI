@@ -15,9 +15,7 @@ function getAllVidoes(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status : 'success',
             vdata : data,
-            message:"all companyvideo details received"
         });
     })
     .catch(function(err){
@@ -31,9 +29,7 @@ function getVideobyID(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             vdata : data,
-            message : 'single companyvideo success'
         });
     })
     .catch(function(err){
@@ -63,9 +59,7 @@ function getVideoByUrl(req,res,next){
         {
             res.status(200)
             .json({
-                status:'1',
                 vdata : data,
-                message : 'getting video based on videourl'
             });
         }
         else
@@ -89,9 +83,7 @@ function getVidoesByCompany(req,res,next){
     .then(function(data){
         res.status(200)
         .json({
-            status:'success',
             vdata : data,
-            message : 'single companyvideo success'
         });
     })
     .catch(function(err){
