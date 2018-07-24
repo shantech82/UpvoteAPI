@@ -7,7 +7,8 @@ module.exports = {
     getCountries:getCountries,
     getAllCountries:getAllCountries,
     getStateCountry:getStateCountry,
-    getAverageNoOfInvestment:getAverageNoOfInvestment
+    getAverageNoOfInvestment:getAverageNoOfInvestment,
+    getICOCategory:getICOCategory
 }
 
 function getCities(req,res,next){
@@ -81,6 +82,19 @@ function getAllCountries(req,res,next){
 
 function getAverageNoOfInvestment(req,res,next){
     db.any('select * from averagenoofinvestment')
+    .then(function(data){
+        res.status(200)
+        .json({
+            data : data,
+        });
+    })
+    .catch(function(err){
+        return next(err);
+    });
+}
+
+function getICOCategory(req,res,next){
+    db.any('select * from icocategory')
     .then(function(data){
         res.status(200)
         .json({

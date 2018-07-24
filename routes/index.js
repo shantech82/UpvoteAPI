@@ -31,12 +31,20 @@ router.get('/api/getCountries',md.getCountries);
 router.get('/api/getAllCountries',md.getAllCountries);
 router.get('/api/getStateCountry',md.getStateCountry);
 router.get('/api/getNoOfInvestment',md.getAverageNoOfInvestment);
+router.get('/api/getICOCategory',md.getICOCategory);
+
+
 //company APIs
 router.get('/api/getAllICOs',ico.getAllICOs);
+router.get('/api/getICO/:id',ico.getICO);
+router.post('/api/createICO',ico.postIco);
+router.put('/api/updateICO',ico.putIco);
+router.delete('/api/deleteICO/:id',ico.deleteICO);
 
 //image log
 router.post('/api/uploadCompanyLogo',fu.uploadCompanyLogo);
 router.get('/api/getCompanyLogo',fu.getCompanyLogo);
+router.delete('/api/deleteFile',fu.deleteFile);
 
 //company videos APIs
 router.get('/api/getAllVidoes',cv.getAllVidoes);

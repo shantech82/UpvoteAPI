@@ -209,6 +209,7 @@ function putIcoUserProfile(req, res, next) {
             }
         });
 }
+
 function deleteUserProfile(req, res, next) {
     var userid = parseInt(req.params.id);
     db.none('delete from icouserprofile where id = $1', userid)

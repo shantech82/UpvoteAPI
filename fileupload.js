@@ -1,12 +1,14 @@
 var db = require('./dbconfig');
 const fileUpload = require('express-fileupload');
+var fs = require('fs');
 
 var multer = require('multer');
 var path = require('path');
 
 module.exports = {
     uploadCompanyLogo: uploadCompanyLogo,
-    getCompanyLogo: getCompanyLogo
+    getCompanyLogo: getCompanyLogo,
+    deleteFile: deleteFile
 }
 
 var storage = multer.diskStorage({
@@ -32,6 +34,25 @@ var storage = multer.diskStorage({
   function getCompanyLogo(req,res,next){
    var logoPath = path.join(__dirname, 'uploads/companyimages/')
     res.sendFile(logoPath + req.query.filename);
+  }
+
+  function deleteFile(req,res,next){
+    var imageDirPath = path.join(__dirname, 'uploads/companyimages/')
+    imagePath = imageDirPath + req.query.filename
+    fs.exists(imagePath, function(exists) {
+      if(exists) {
+        fs.unlink(imagePath);
+        res.status(200)
+                .json({
+                    message: 'file deleted',
+                });
+      } else {
+        res.status(200)
+                .json({
+                    message: 'file not found',
+                });
+      }
+    });
   }
 
  
