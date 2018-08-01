@@ -11,7 +11,7 @@ module.exports = {
 
 function getAllICOs(req,res,next){
     db.any('select ico.id, ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription, ico.iswhitelistjoined, '+
-    'ico.createdon, il.livestreamdate icolivestreamData from icos ico left join ICOsLiveStream il on il.icosid = ico.id')
+    'ico.createdon, ico.userid, il.livestreamdate icolivestreamData from icos ico left join ICOsLiveStream il on il.icosid = ico.id')
     .then(function(data){
         res.status(200)
         .json({
@@ -29,7 +29,7 @@ function getICO(req, res, next) {
     'ico.smn_bitcointalk, ico.smn_github,ico.smn_others, ico.email, ico.address, ico.city,ico.country,ico.amountraising,ico.website, '+ 
     'ico.whitepaper,ico.shortdescription,ico.productlink,ico.videouploadurl, ico.icostartdate,ico.icoenddate,ico.icocategoryid, '+ 
     'ico.linktoboundry,ico.tokcenname,ico.tokeytype,ico.pricepertoken,ico.iswhitelistjoined,ico.createdon,ico.smn_youtube,smn_linkedin, '+ 
-    'ico.phone_number,ico.long_description,il.livestreamdate icolivestreamDate from icos ico '+ 
+    'ico.phone_number,ico.long_description,ico.userid,il.livestreamdate icolivestreamDate from icos ico '+ 
     'left join ICOsLiveStream il on il.icosid = ico.id where ico.id = $1', icoid)
         .then(function (data) {
             res.status(200)
@@ -46,11 +46,11 @@ function postIco (req, res, next) {
     let query = 'insert into icos (iconame,icologoimage,smn_twitter,smn_facebook,smn_google,smn_reddit,smn_bitcointalk,smn_github, '+
         'smn_others,email,city,country,amountraising,website,whitepaper,shortdescription, address,'+
         'productlink,videouploadurl,icostartdate,icoenddate,icocategoryid,linktoboundry,tokcenname,tokeytype, '+
-        'pricepertoken,iswhitelistjoined,createdon,smn_youtube,phone_number,long_description,smn_linkedin)  '+
+        'pricepertoken,iswhitelistjoined,createdon,smn_youtube,phone_number,long_description,smn_linkedin,userid,)  '+
         'values (${iconame}, ${icologoimage}, ${smn_twitter},${smn_facebook}, ${smn_google}, ${smn_reddit}, ${smn_bitcointalk}, ${smn_github}, '+
         '${smn_others}, ${email}, ${city},${country}, ${amountraising}, ${website}, ${whitepaper}, ${shortdescription}, ${address},'+
         '${productlink}, ${videouploadurl}, ${icostartdate},${icoenddate}, ${icocategoryid}, ${linktoboundry}, ${tokcenname}, ${tokeytype}, '+
-        '${pricepertoken}, ${iswhitelistjoined}, ${createdon},${smn_youtube}, ${phone_number}, ${long_description},${smn_linkedin})';
+        '${pricepertoken}, ${iswhitelistjoined}, ${createdon},${smn_youtube}, ${phone_number}, ${long_description},${smn_linkedin},${userid})';
     db.none(query, req.body)
         .then(function () {
             res.status(200)
@@ -74,7 +74,7 @@ function putIco(req, res, next) {
                  'productlink = ${productlink},videouploadurl = ${videouploadurl},icostartdate = ${icostartdate},icoenddate = ${icoenddate}, '+
                  'icocategoryid = ${icocategoryid},linktoboundry = ${linktoboundry},tokcenname = ${tokcenname},tokeytype = ${tokeytype}, '+
                  'pricepertoken = ${pricepertoken},iswhitelistjoined = ${iswhitelistjoined},createdon = ${createdon},smn_youtube = ${smn_youtube}, '+
-                'phone_number = ${phone_number},long_description = ${long_description}, smn_linkedin = ${smn_linkedin} where id =  ${id}'
+                'phone_number = ${phone_number},long_description = ${long_description},smn_linkedin = ${smn_linkedin},userid = ${userid} where id =  ${id}'
                 db.none(query, req.body)
                     .then(function () {
                         db.any("SELECT * FROM icos WHERE id = $1", req.body.id)
