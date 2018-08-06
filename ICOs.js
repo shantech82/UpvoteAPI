@@ -46,7 +46,7 @@ function postIco (req, res, next) {
     let query = 'insert into icos (iconame,icologoimage,smn_twitter,smn_facebook,smn_google,smn_reddit,smn_bitcointalk,smn_github, '+
         'smn_others,email,city,country,amountraising,website,whitepaper,shortdescription, address,'+
         'productlink,videouploadurl,icostartdate,icoenddate,icocategoryid,linktoboundry,tokcenname,tokeytype, '+
-        'pricepertoken,iswhitelistjoined,createdon,smn_youtube,phone_number,long_description,smn_linkedin,userid,)  '+
+        'pricepertoken,iswhitelistjoined,createdon,smn_youtube,phone_number,long_description,smn_linkedin,userid)  '+
         'values (${iconame}, ${icologoimage}, ${smn_twitter},${smn_facebook}, ${smn_google}, ${smn_reddit}, ${smn_bitcointalk}, ${smn_github}, '+
         '${smn_others}, ${email}, ${city},${country}, ${amountraising}, ${website}, ${whitepaper}, ${shortdescription}, ${address},'+
         '${productlink}, ${videouploadurl}, ${icostartdate},${icoenddate}, ${icocategoryid}, ${linktoboundry}, ${tokcenname}, ${tokeytype}, '+
@@ -74,7 +74,8 @@ function putIco(req, res, next) {
                  'productlink = ${productlink},videouploadurl = ${videouploadurl},icostartdate = ${icostartdate},icoenddate = ${icoenddate}, '+
                  'icocategoryid = ${icocategoryid},linktoboundry = ${linktoboundry},tokcenname = ${tokcenname},tokeytype = ${tokeytype}, '+
                  'pricepertoken = ${pricepertoken},iswhitelistjoined = ${iswhitelistjoined},createdon = ${createdon},smn_youtube = ${smn_youtube}, '+
-                'phone_number = ${phone_number},long_description = ${long_description},smn_linkedin = ${smn_linkedin},userid = ${userid} where id =  ${id}'
+                 'phone_number = ${phone_number},long_description = ${long_description},smn_linkedin = ${smn_linkedin},userid = ${userid}'+
+                 'where id =  ${id}'
                 db.none(query, req.body)
                     .then(function () {
                         db.any("SELECT * FROM icos WHERE id = $1", req.body.id)

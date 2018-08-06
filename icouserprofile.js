@@ -28,7 +28,8 @@ function assignData(data) {
         averageinvestmentsizeperyear: data.averageinvestmentsizeperyear,
         id: data.id,
         isactive: data.isactive,
-        title: data.title
+        title: data.title,
+        ismoderator: data.ismoderator
     }
 
     return userData;
@@ -164,7 +165,7 @@ function postIcoUserProfile(req, res, next) {
 
     req.body.password = sp.EncryptPassword(req.body.password);
 
-    let query = 'insert into icouserprofile(name,email,password,isinvestor,activatekey,isactive,createdon,profileimageurl) values (${name}, ${email}, ${password},${isinvestor}, ${activatekey}, ${isactive}, ${createdon}, ${profileimageurl})';
+    let query = 'insert into icouserprofile(name,email,password,isinvestor,activatekey,isactive,createdon,profileimageurl,ismoderator) values (${name}, ${email}, ${password},${isinvestor}, ${activatekey}, ${isactive}, ${createdon}, ${profileimageurl}, ${ismoderator})';
     db.none(query, req.body)
         .then(function () {
             db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
@@ -184,7 +185,7 @@ function putIcoUserProfile(req, res, next) {
     var userData = db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
         .then(function (data) {
             if (data.length > 0) {
-                let query = 'update icouserprofile set isinvestor = ${isinvestor},profileimageurl = ${profileimageurl},location = ${location},bio = ${bio},investmentfocus = ${investmentfocus},averagenoofinvestment = ${averagenoofinvestment},averageinvestmentsizeperyear = ${averageinvestmentsizeperyear},title = ${title} where id =  ${id}'
+                let query = 'update icouserprofile set isinvestor = ${isinvestor},profileimageurl = ${profileimageurl},location = ${location},bio = ${bio},investmentfocus = ${investmentfocus},averagenoofinvestment = ${averagenoofinvestment},averageinvestmentsizeperyear = ${averageinvestmentsizeperyear},title = ${title},ismoderator = ${ismoderator} where id =  ${id}'
                 db.none(query, req.body)
                     .then(function () {
                         db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
