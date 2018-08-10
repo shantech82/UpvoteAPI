@@ -1,7 +1,7 @@
 var email 	= require("emailjs");
 
 var server 	= email.server.connect({
-   user:    "upvoteico@gmail.com", 
+   user:    "upvoteicocommunication@gmail.com", 
    password:"upvoteico1234", 
    host:    "smtp.gmail.com", 
    ssl:     true
@@ -20,7 +20,7 @@ function sendActivateMail(req,res,next){
 
     var message	= {
         text:	messageText, 
-        from:	"UpvoteICO Team <upvoteico@gmail.com>", 
+        from:	"UpvoteICO Registration <upvoteicocommunication@gmail.com>", 
         to:		toMailAddress,
         subject:	"Welcome to Upvote ICO, activate your account",
         attachment: 

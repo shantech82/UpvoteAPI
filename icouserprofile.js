@@ -68,7 +68,7 @@ function getUserProfileWithICOs(req, res, next) {
    'ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription,ii.createdon icocreatedon, ico.iswhitelistjoined, '+
    'il.livestreamdate icolivestreamData from icouserprofile u '+
    'left join averagenoofinvestment ave '+
-   'on ave.id = u.averagenoofinvestment '+
+   'on ave.id = u.averageinvestmentsizeperyear '+
    'left join investoricos ii '+
    'on ii.investorid = u.id '+
    'left join icos ico '+
