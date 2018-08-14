@@ -9,6 +9,7 @@ var md = require('../masterdata')
 var ico = require('../ICOs')
 var fu = require('../fileupload');
 var cv = require('../companyvideo');
+var ls = require('../livestream');
 
 router.get('/api/Registrations',us.getAllIcoUserProfiles);
 router.get('/api/Registration/:id',us.getSingleIcoUserProfile);
@@ -23,7 +24,6 @@ router.put('/api/createICOProfile',us.putIcoUserProfile);
 router.delete('/api/Registration/:id',us.deleteUserProfile);
 router.get('/api/InvestorICOs/:id',us.getUserProfileWithICOs);
 
-
 //master data APIs
 router.get('/api/getCities',md.getCities);
 router.get('/api/getStates',md.getStates);
@@ -32,7 +32,6 @@ router.get('/api/getAllCountries',md.getAllCountries);
 router.get('/api/getStateCountry',md.getStateCountry);
 router.get('/api/getNoOfInvestment',md.getAverageNoOfInvestment);
 router.get('/api/getICOCategory',md.getICOCategory);
-
 
 //company APIs
 router.get('/api/getAllICOs',ico.getAllICOs);
@@ -55,4 +54,10 @@ router.post('/api/createCompanyvideo',cv.createCompanyvideo);
 router.get('/api/getVideoByUrl/',cv.getVideoByUrl);
 router.delete('/api/deleteVideobyID/:id',cv.deleteVideobyID);
 
+//livestream
+router.post('/api/ScheduleLiveStream',ls.ScheduleLiveStream);
+router.put('/api/UpdateLiveStream',ls.UpdateLiveStream);
+router.put('/api/UpdateStatusLiveStream',ls.UpdateStatusLiveStream);
+router.get('/api/getLiveStream',ls.getLiveStream);
+router.delete('/api/deleteLiveStream/:id',ls.deleteLiveStream);
 module.exports = router;

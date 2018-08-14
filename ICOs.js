@@ -12,7 +12,8 @@ module.exports = {
 
 function getAllICOs(req,res,next){
     db.any('select ico.id, ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription, ico.iswhitelistjoined, '+
-    'ico.createdon, ico.userid, il.livestreamdate icolivestreamData from icos ico left join ICOsLiveStream il on il.icosid = ico.id')
+    'ico.createdon, ico.userid, il.livestreamdate icolivestreamData, il.livestreamcode, '+ 
+    'il.time, il.livestreamstatus from icos ico left join ICOsLiveStream il on il.icosid = ico.id')
     .then(function(data){
         res.status(200)
         .json({
@@ -30,8 +31,8 @@ function getICO(req, res, next) {
     'ico.smn_bitcointalk, ico.smn_github,ico.smn_others, ico.email, ico.address, ico.city,ico.country,ico.amountraising,ico.website, '+ 
     'ico.whitepaper,ico.shortdescription,ico.productlink,ico.videouploadurl, ico.icostartdate,ico.icoenddate,ico.icocategoryid, '+ 
     'ico.linktoboundry,ico.tokcenname,ico.tokeytype,ico.pricepertoken,ico.iswhitelistjoined,ico.createdon,ico.smn_youtube,smn_linkedin, '+ 
-    'ico.phone_number,ico.long_description,ico.userid,il.livestreamdate icolivestreamDate from icos ico '+ 
-    'left join ICOsLiveStream il on il.icosid = ico.id where ico.id = $1', icoid)
+    'ico.phone_number,ico.long_description,ico.userid,il.livestreamdate icolivestreamDate,il.livestreamcode livestreamcode, ' +
+    'il.time, il.livestreamstatus from icos ico left join ICOsLiveStream il on il.icosid = ico.id where ico.id = $1', icoid)
         .then(function (data) {
             res.status(200)
                 .json({
