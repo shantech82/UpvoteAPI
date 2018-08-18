@@ -1,10 +1,10 @@
 var email 	= require("emailjs");
 
 var server 	= email.server.connect({
-   user:    "upvoteicocommunication@gmail.com", 
-   password:"upvoteico1234", 
+   user:    "upvoteico@gmail.com", 
+   password:"Upvoteunicorn123", 
    host:    "smtp.gmail.com", 
-   ssl:     true
+   ssl:     true,
 });
 
 module.exports = {
