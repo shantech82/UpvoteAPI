@@ -7,7 +7,8 @@ module.exports = {
     postIco: postIco,
     putIco: putIco,
     deleteICO: deleteICO,
-    getInsertedICO: getInsertedICO
+    getInsertedICO: getInsertedICO,
+    getInsertedICOByName: getInsertedICOByName
 }
 
 function getAllICOs(req,res,next){
@@ -47,6 +48,19 @@ function getICO(req, res, next) {
 function getInsertedICO(req, res, next) {
     db.any('select id from icos where iconame = ${iconame} and icostartdate = ${icostartdate}' +
     'and icoenddate = ${icoenddate} and tokcenname = ${tokcenname}', req.query)
+        .then(function (data) {
+            res.status(200)
+                .json({
+                    data: data[0],
+                });
+        })
+        .catch(function (err) {
+            return next(err);
+        });
+}
+
+function getInsertedICOByName(req, res, next) {
+    db.any('select id from icos where iconame = ${iconame}', req.query)
         .then(function (data) {
             res.status(200)
                 .json({

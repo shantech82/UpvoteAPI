@@ -40,6 +40,7 @@ router.post('/api/createICO',ico.postIco);
 router.put('/api/updateICO',ico.putIco);
 router.delete('/api/deleteICO/:id',ico.deleteICO);
 router.get('/api/getInsertedICO',ico.getInsertedICO);
+router.get('/api/getInsertedICOByName',ico.getInsertedICOByName);
 
 //image log
 router.post('/api/uploadCompanyLogo',fu.uploadCompanyLogo);
