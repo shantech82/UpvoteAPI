@@ -23,6 +23,7 @@ router.put('/api/putUserActivate',us.putUserActivate);
 router.put('/api/createICOProfile',us.putIcoUserProfile);
 router.delete('/api/Registration/:id',us.deleteUserProfile);
 router.get('/api/InvestorICOs/:id',us.getUserProfileWithICOs);
+router.get('/api/getOwnICOs/:id',us.getOwnICOs);
 
 //master data APIs
 router.get('/api/getCities',md.getCities);

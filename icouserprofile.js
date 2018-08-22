@@ -11,7 +11,8 @@ module.exports = {
     putUserActivate: putUserActivate,
     putIcoUserProfile: putIcoUserProfile,
     deleteUserProfile: deleteUserProfile,
-    getUserProfileWithICOs: getUserProfileWithICOs
+    getUserProfileWithICOs: getUserProfileWithICOs,
+    getOwnICOs: getOwnICOs
 }
 
 function assignData(data) {
@@ -67,7 +68,7 @@ function getSingleIcoUserProfile(req, res, next) {
 
 function getUserProfileWithICOs(req, res, next) {
     var userid = parseInt(req.params.id);
-    db.any('select u.id, u.name, u.title, u.location,u.bio,u.isinvestor, u. profileimageurl, ave.value averageinvestmentsizeperyear, '+
+    db.any('select ico.id, u.name, u.title, u.location,u.bio,u.isinvestor, u. profileimageurl, ave.value averageinvestmentsizeperyear, '+
    'ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription,ii.createdon icocreatedon, ico.iswhitelistjoined, '+
    'il.livestreamdate icolivestreamData from icouserprofile u '+
    'left join averagenoofinvestment ave '+
@@ -79,6 +80,22 @@ function getUserProfileWithICOs(req, res, next) {
    'left join ICOsLiveStream il '+
    'on il.icosid = ico.id '+
    'where u.id =  $1', userid)
+        .then(function (data) {
+            res.status(200)
+                .json({
+                    data: data,
+                });
+        })
+        .catch(function (err) {
+            return next(err);
+        });
+}
+
+function getOwnICOs(req, res, next) {
+    var userid = parseInt(req.params.id);
+    db.any('select ico.id, ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription, ico.iswhitelistjoined, '+
+    'ico.createdon, ico.userid, il.livestreamdate icolivestreamData, il.livestreamcode, '+ 
+    'il.time, il.livestreamstatus from icos ico left join ICOsLiveStream il on il.icosid = ico.id where ico.userid =  $1', userid)
         .then(function (data) {
             res.status(200)
                 .json({
