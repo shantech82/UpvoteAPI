@@ -16,7 +16,7 @@ function sendActivateMail(req,res,next){
     var linktoActivate = req.body.linktoActivate;
     var userName = req.body.userName
     var toMailAddress = req.body.toMailAddress
-    var messageText = "<html><body><p>Dear "+ userName + "</p><p>Welcome to Upvote ICO Team</p><p>Please click below link to activate your account</p><a href=" + linktoActivate  + ">Click to activate</a><p>if you need any help, please contact us</p><p>Thanks</P><p>Upvote ICO Team</p></body></html>"
+    var messageText = "<html><body><p>Dear "+ userName + "</p><p>Welcome on board. We are very happy to have you here.</p><p>To activate your account please click the link.</p><a href=" + linktoActivate  + ">Click to activate</a><p>We would love to assist you in any kind of questions so do not hesitate to contact us.</p><p>Meanwhile you can fill up your profile.</p><p>Best Regards,</P><p>Upvote ICO Team</p></body></html>"
 
     var message	= {
         text:	messageText, 
