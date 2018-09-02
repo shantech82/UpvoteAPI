@@ -27,7 +27,7 @@ function uploadCompanyLogo(req, res, next) {
     if (err) {
       res.json({ error_code: 1, nperr_desc: err });
     } else {
-    res.json(req.file.originalname)
+      res.json(req.file.originalname)
     }
   });
 }
@@ -40,19 +40,19 @@ function getCompanyLogo(req, res, next) {
 function deleteFile(req, res, next) {
   var imageDirPath = path.join(__dirname, 'uploads/companyimages/')
   imagePath = imageDirPath + req.query.filename
-  fs.exists(imagePath, function (exists) {
-    if (exists) {
-      fs.unlink(imagePath);
-      res.status(200)
-        .json({
-          message: 'file deleted',
-        });
-    } else {
-      res.status(200)
-        .json({
-          message: 'file not found',
-        });
-    }
-  });
+  if(fs.existsSync(imagePath)) {
+    fs.unlink(imagePath, (err) => {
+      next(err);
+    });
+    res.status(200)
+      .json({
+        message: 'file deleted',
+      })
+  } else {
+    res.status(200)
+      .json({
+        message: 'file not found',
+      })
+  }
 }
 

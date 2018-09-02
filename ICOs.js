@@ -104,7 +104,7 @@ function putIco(req, res, next) {
                  'productlink = ${productlink},videouploadurl = ${videouploadurl},icostartdate = ${icostartdate},icoenddate = ${icoenddate}, '+
                  'icocategoryid = ${icocategoryid},linktoboundry = ${linktoboundry},tokcenname = ${tokcenname},tokeytype = ${tokeytype}, '+
                  'pricepertoken = ${pricepertoken},iswhitelistjoined = ${iswhitelistjoined},createdon = ${createdon},smn_youtube = ${smn_youtube}, '+
-                 'phone_number = ${phone_number},long_description = ${long_description},smn_linkedin = ${smn_linkedin},userid = ${userid},youtubevideolink = ${youtubevideolink}'+
+                 'phone_number = ${phone_number},long_description = ${long_description},smn_linkedin = ${smn_linkedin},userid = ${userid}, youtubevideolink = ${youtubevideolink} '+
                  'where id =  ${id}'
                 db.none(query, req.body)
                     .then(function () {
