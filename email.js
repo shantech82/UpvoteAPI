@@ -50,7 +50,7 @@ function sendPasswordResetMail(req,res,next){
 
     var message	= {
         text:	messageText, 
-        from:	"UpvoteICO Registration <upvoteicocommunication@gmail.com>", 
+        from:	"UpvoteICO Password Reset <upvoteicocommunication@gmail.com>", 
         to:		toMailAddress,
         subject:	"Welcome to Upvote ICO, reset your password",
         attachment: 
