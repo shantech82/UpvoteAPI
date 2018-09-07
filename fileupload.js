@@ -11,7 +11,7 @@ module.exports = {
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads/companyimages/')
+    cb(null, './uploads/files/')
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
@@ -21,6 +21,10 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('file');
 
 function uploadCompanyLogo(req, res, next) {
+  var logoPath = path.join(__dirname, 'uploads/files/')
+  if (!fs.existsSync(logoPath)){
+    fs.mkdirSync(logoPath);
+}
   upload(req, res, function (err) {
     if (err) {
       res.json({ error_code: 1, nperr_desc: err });
@@ -31,19 +35,19 @@ function uploadCompanyLogo(req, res, next) {
 }
 
 function getCompanyLogo(req, res, next) {
-  var logoPath = path.join(__dirname, 'uploads/companyimages/')
+  var logoPath = path.join(__dirname, 'uploads/files/')
   res.sendFile(logoPath + req.query.filename);
 }
 
 
 function getAllFiles(req, res, next) {
-  var filedirpath = path.join(__dirname, 'uploads/companyimages/')
+  var filedirpath = path.join(__dirname, 'uploads/files/')
   var images = fs.readdirSync(filedirpath);
   res.json(images);
 }
 
 function deleteFile(req, res, next) {
-  var imageDirPath = path.join(__dirname, 'uploads/companyimages/')
+  var imageDirPath = path.join(__dirname, 'uploads/files/')
   imagePath = imageDirPath + req.query.filename
   if(fs.existsSync(imagePath)) {
     fs.unlink(imagePath, (err) => {
