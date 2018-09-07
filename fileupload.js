@@ -1,14 +1,12 @@
-var db = require('./dbconfig');
-const fileUpload = require('express-fileupload');
 var fs = require('fs');
-
 var multer = require('multer');
 var path = require('path');
 
 module.exports = {
   uploadCompanyLogo: uploadCompanyLogo,
   getCompanyLogo: getCompanyLogo,
-  deleteFile: deleteFile
+  deleteFile: deleteFile,
+  getAllFiles: getAllFiles
 }
 
 var storage = multer.diskStorage({
@@ -35,6 +33,13 @@ function uploadCompanyLogo(req, res, next) {
 function getCompanyLogo(req, res, next) {
   var logoPath = path.join(__dirname, 'uploads/companyimages/')
   res.sendFile(logoPath + req.query.filename);
+}
+
+
+function getAllFiles(req, res, next) {
+  var filedirpath = path.join(__dirname, 'uploads/companyimages/')
+  var images = fs.readdirSync(filedirpath);
+  res.json(images);
 }
 
 function deleteFile(req, res, next) {

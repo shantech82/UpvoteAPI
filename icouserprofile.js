@@ -12,7 +12,9 @@ module.exports = {
     putIcoUserProfile: putIcoUserProfile,
     deleteUserProfile: deleteUserProfile,
     getUserProfileWithICOs: getUserProfileWithICOs,
-    getOwnICOs: getOwnICOs
+    getOwnICOs: getOwnICOs,
+    putChangePassword: putChangePassword,
+    putActivateKey: putActivateKey
 }
 
 function assignData(data) {
@@ -68,18 +70,18 @@ function getSingleIcoUserProfile(req, res, next) {
 
 function getUserProfileWithICOs(req, res, next) {
     var userid = parseInt(req.params.id);
-    db.any('select ico.id, u.name, u.title, u.location,u.bio,u.isinvestor, u. profileimageurl, ave.value averageinvestmentsizeperyear, '+
-   'ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription,ii.createdon icocreatedon, ico.iswhitelistjoined, '+
-   'il.livestreamdate icolivestreamData from icouserprofile u '+
-   'left join averagenoofinvestment ave '+
-   'on ave.id = u.averageinvestmentsizeperyear '+
-   'left join investoricos ii '+
-   'on ii.investorid = u.id '+
-   'left join icos ico '+
-   'on ico.id = ii.icocompanyid '+
-   'left join ICOsLiveStream il '+
-   'on il.icosid = ico.id '+
-   'where u.id =  $1', userid)
+    db.any('select ico.id, u.name, u.title, u.location,u.bio,u.isinvestor, u. profileimageurl, ave.value averageinvestmentsizeperyear, ' +
+        'ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription,ii.createdon icocreatedon, ico.iswhitelistjoined, ' +
+        'il.livestreamdate icolivestreamData from icouserprofile u ' +
+        'left join averagenoofinvestment ave ' +
+        'on ave.id = u.averageinvestmentsizeperyear ' +
+        'left join investoricos ii ' +
+        'on ii.investorid = u.id ' +
+        'left join icos ico ' +
+        'on ico.id = ii.icocompanyid ' +
+        'left join ICOsLiveStream il ' +
+        'on il.icosid = ico.id ' +
+        'where u.id =  $1', userid)
         .then(function (data) {
             res.status(200)
                 .json({
@@ -93,9 +95,9 @@ function getUserProfileWithICOs(req, res, next) {
 
 function getOwnICOs(req, res, next) {
     var userid = parseInt(req.params.id);
-    db.any('select ico.id, ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription, ico.iswhitelistjoined, '+
-    'ico.createdon, ico.userid, il.livestreamdate icolivestreamData, il.livestreamcode, '+ 
-    'il.time, il.livestreamstatus from icos ico left join ICOsLiveStream il on il.icosid = ico.id where ico.userid =  $1', userid)
+    db.any('select ico.id, ico.iconame, ico.icologoimage,ico.shortdescription icoshortdescription, ico.iswhitelistjoined, ' +
+        'ico.createdon, ico.userid, il.livestreamdate icolivestreamData, il.livestreamcode, ' +
+        'il.time, il.livestreamstatus from icos ico left join ICOsLiveStream il on il.icosid = ico.id where ico.userid =  $1', userid)
         .then(function (data) {
             res.status(200)
                 .json({
@@ -181,31 +183,58 @@ function putUserActivate(req, res, next) {
         });
 }
 
-function postIcoUserProfile(req, res, next) {
-
+function putChangePassword(req, res, next) {
     req.body.password = sp.EncryptPassword(req.body.password);
-
-    let query = 'insert into icouserprofile(name,email,password,isinvestor,activatekey,isactive,createdon,profileimageurl,ismoderator) values (${name}, ${email}, ${password},${isinvestor}, ${activatekey}, ${isactive}, ${createdon}, ${profileimageurl}, ${ismoderator})';
-    db.none(query, req.body)
-        .then(function () {
-            db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
-                .then(function (data) {
-                    res.status(200)
-                        .json({
-                            userData: assignData(data[0]),
-                        });
-                });
+    db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
+        .then(function (data) {
+            if (data.length > 0 && data[0].activatekey === req.body.activatekey) {
+                let query = "update icouserprofile set isactive = true, password = ${password} where id = ${id}"
+                db.none(query, req.body)
+                    .then(function (data) {
+                        res.status(200)
+                            .json({
+                                status: 'success',
+                                message: true,
+                            });
+                    })
+                    .catch(function (err) {
+                        return next(err);
+                    });
+            }
+            else {
+                res.status(200)
+                    .json({
+                        status: 'activate key is invalid',
+                        message: false,
+                    });
+            }
         })
         .catch(function (err) {
             return next(err);
         });
 }
 
-function putIcoUserProfile(req, res, next) {
-    var userData = db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
+function putActivateKey(req, res, next) {
+    let query = "update icouserprofile set isactive = false, activatekey = ${activatekey} where id = ${id}"
+    db.none(query, req.body)
         .then(function (data) {
-            if (data.length > 0) {
-                let query = 'update icouserprofile set isinvestor = ${isinvestor},profileimageurl = ${profileimageurl},location = ${location},bio = ${bio},investmentfocus = ${investmentfocus},averagenoofinvestment = ${averagenoofinvestment},averageinvestmentsizeperyear = ${averageinvestmentsizeperyear},title = ${title},ismoderator = ${ismoderator} where id =  ${id}'
+            res.status(200)
+                .json({
+                    status: 'success',
+                    message: true,
+                })
+
+                .catch(function (err) {
+                    return next(err);
+                });
+        });
+    }
+
+function postIcoUserProfile(req, res, next) {
+
+                req.body.password = sp.EncryptPassword(req.body.password);
+
+                let query = 'insert into icouserprofile(name,email,password,isinvestor,activatekey,isactive,createdon,profileimageurl,ismoderator) values (${name}, ${email}, ${password},${isinvestor}, ${activatekey}, ${isactive}, ${createdon}, ${profileimageurl}, ${ismoderator})';
                 db.none(query, req.body)
                     .then(function () {
                         db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
@@ -220,29 +249,49 @@ function putIcoUserProfile(req, res, next) {
                         return next(err);
                     });
             }
-            else {
-                res.status(200)
-                    .json({
-                        status: 'fail',
-                        message: 'no profile updated',
-                        data: req.body
+
+function putIcoUserProfile(req, res, next) {
+                var userData = db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
+                    .then(function (data) {
+                        if (data.length > 0) {
+                            let query = 'update icouserprofile set isinvestor = ${isinvestor},profileimageurl = ${profileimageurl},location = ${location},bio = ${bio},investmentfocus = ${investmentfocus},averagenoofinvestment = ${averagenoofinvestment},averageinvestmentsizeperyear = ${averageinvestmentsizeperyear},title = ${title},ismoderator = ${ismoderator} where id =  ${id}'
+                            db.none(query, req.body)
+                                .then(function () {
+                                    db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
+                                        .then(function (data) {
+                                            res.status(200)
+                                                .json({
+                                                    userData: assignData(data[0]),
+                                                });
+                                        });
+                                })
+                                .catch(function (err) {
+                                    return next(err);
+                                });
+                        }
+                        else {
+                            res.status(200)
+                                .json({
+                                    status: 'fail',
+                                    message: 'no profile updated',
+                                    data: req.body
+                                });
+                        }
                     });
             }
-        });
-}
 
 function deleteUserProfile(req, res, next) {
-    var userid = parseInt(req.params.id);
-    db.none('delete from icouserprofile where id = $1', userid)
-        .then(function (data) {
-            res.status(200)
-                .json({
-                    data: data,
-                });
-        })
-        .catch(function (err) {
-            return next(err);
-        });
-}
+                var userid = parseInt(req.params.id);
+                db.none('delete from icouserprofile where id = $1', userid)
+                    .then(function (data) {
+                        res.status(200)
+                            .json({
+                                data: data,
+                            });
+                    })
+                    .catch(function (err) {
+                        return next(err);
+                    });
+            }
 
 
