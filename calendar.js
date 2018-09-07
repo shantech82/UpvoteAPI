@@ -9,7 +9,7 @@ module.exports = {
 
 function createEvent(req, res, next) {
     
-    var icsfolder = path.join(__dirname, 'uploads/files/')
+    var icsfolder = path.join(__dirname, 'uploads/')
     var icsname = req.body.title + '_event.ics';
     var icsPath = icsfolder + icsname;
 
