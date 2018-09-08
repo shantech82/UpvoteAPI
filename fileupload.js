@@ -91,6 +91,9 @@ function getCompanyLogo(req, res, next) {
 
 function generateFiles(req, res, next) {
   var filedirpath = path.join(__dirname, 'uploads/')
+  if (!fs.existsSync(filedirpath)) {
+    fs.mkdirSync(filedirpath);
+  }
   filepath = filedirpath + req.query.filename
   if (fs.existsSync(filepath)) {
     res.status(200)
@@ -113,8 +116,6 @@ function generateFiles(req, res, next) {
             });
         }
       });
-
-
   }
 }
 
