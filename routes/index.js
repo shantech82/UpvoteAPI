@@ -44,7 +44,7 @@ router.get('/api/getICOCategory',md.getICOCategory);
 
 //company APIs
 router.get('/api/getAllICOs',ico.getAllICOs);
-router.get('/api/getICO/:id',ico.getICO);
+router.get('/api/getICO',ico.getICO);
 router.post('/api/createICO',ico.postIco);
 router.put('/api/updateICO',ico.putIco);
 router.delete('/api/deleteICO/:id',ico.deleteICO);
@@ -56,6 +56,9 @@ router.post('/api/uploadCompanyLogo',fu.uploadCompanyLogo);
 router.get('/api/getCompanyLogo',fu.getCompanyLogo);
 router.delete('/api/deleteFile',fu.deleteFile);
 router.get('/api/getAllFiles',fu.getAllFiles);
+router.post('/api/uploadFiles',fu.uploadFiles);
+router.get('/api/generateFiles',fu.generateFiles);
+router.post('/api/test',fu.test);
 
 //company videos APIs
 router.get('/api/getAllVidoes',cv.getAllVidoes);
