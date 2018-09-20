@@ -24,6 +24,7 @@ router.get('/api/InvestorICOs/:id',us.getUserProfileWithICOs);
 router.get('/api/getOwnICOs/:id',us.getOwnICOs);
 router.put('/api/putChangePassword',us.putChangePassword);
 router.put('/api/putActivateKey',us.putActivateKey);
+router.put('/api/putUserProfileImage',us.putUserProfileImage);
 
 //password change
 router.get('/api/getEncryptPassword',sp.getEncryptPassword);
@@ -59,6 +60,8 @@ router.get('/api/getAllFiles',fu.getAllFiles);
 router.post('/api/uploadFiles',fu.uploadFiles);
 router.get('/api/generateFiles',fu.generateFiles);
 router.post('/api/test',fu.test);
+router.get('/api/checkFileisAvailable', fu.checkFileisAvailable);
+router.get('/api/getAllFileName', fu.getAllFileName);
 
 //company videos APIs
 router.get('/api/getAllVidoes',cv.getAllVidoes);
@@ -74,6 +77,8 @@ router.put('/api/UpdateLiveStream',ls.UpdateLiveStream);
 router.put('/api/UpdateStatusLiveStream',ls.UpdateStatusLiveStream);
 router.get('/api/getLiveStream',ls.getLiveStream);
 router.delete('/api/deleteLiveStream/:id',ls.deleteLiveStream);
+router.post('/api/ScheduleLiveStreamforICO',ls.ScheduleLiveStreamforICO);
+router.delete('/api/deleteLiveStreamSystemCreated/:id',ls.deleteLiveStreamSystemCreated);
 
 //calendar
 router.post('/api/getCalendar',cal.createEvent);

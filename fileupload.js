@@ -10,7 +10,9 @@ module.exports = {
   getAllFiles: getAllFiles,
   uploadFiles: uploadFiles,
   generateFiles: generateFiles,
-  test: test
+  test: test,
+  checkFileisAvailable: checkFileisAvailable,
+  getAllFileName: getAllFileName
 }
 
 var storage = multer.diskStorage({
@@ -40,7 +42,6 @@ function uploadCompanyLogo(req, res, next) {
 }
 
 function test(req, res, next) {
-  console.log(req.query);
   res.send(JSON.stringify(req.body));
 }
 
@@ -119,10 +120,37 @@ function generateFiles(req, res, next) {
   }
 }
 
+
 function getAllFiles(req, res, next) {
   var filedirpath = path.join(__dirname, 'uploads/')
   var images = fs.readdirSync(filedirpath);
   res.json(images);
+}
+
+function checkFileisAvailable(req, res, next) {
+  var filedirpath = path.join(__dirname, 'uploads/')
+  filepath = filedirpath + req.query.filename
+  if (fs.existsSync(filepath)) {
+    res.status(200)
+      .json({
+        status: true
+      });
+  } else {
+    res.status(200)
+    .json({
+      status: false
+    });
+  }
+}
+
+function getAllFileName(req, res, next) {
+  db.any('select filename from uploadfiles').
+      then(function (data) {
+        res.status(200)
+        .json({
+          filenamedata: data
+        })
+      });
 }
 
 function deleteFile(req, res, next) {
