@@ -2,7 +2,7 @@ var email 	= require("emailjs");
 
 var server 	= email.server.connect({
    user:    "upvoteico@gmail.com", 
-   password:"Upvoteunicorn123", 
+   password:"Kantturikettu123", 
    host:    "smtp.gmail.com", 
    ssl:     true,
 });
