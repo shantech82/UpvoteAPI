@@ -38,7 +38,10 @@ const User = sequelize.define('user', {
     isactive: {
         type: Sequelize.BOOLEAN
     },
-    isactive: {
+    ismoderator: {
+        title: Sequelize.BOOLEAN
+    },
+    ispresenter: {
         title: Sequelize.BOOLEAN
     }
 

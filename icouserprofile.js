@@ -20,6 +20,7 @@ module.exports = {
 }
 
 function assignData(data) {
+    console.log('User Data', data)
     let userData = {
         name: data.name,
         email: data.email,
@@ -34,6 +35,7 @@ function assignData(data) {
         id: data.id,
         isactive: data.isactive,
         title: data.title,
+        ispresenter: data.ispresenter,
         ismoderator: data.ismoderator
     }
 
@@ -252,7 +254,7 @@ function putUserProfileImage(req, res, next) {
 function postIcoUserProfile(req, res, next) {
     req.body.password = sp.EncryptPassword(req.body.password);
 
-    let query = 'insert into icouserprofile(name,email,password,isinvestor,activatekey,isactive,createdon,profileimageurl,ismoderator) values (${name}, ${email}, ${password},${isinvestor}, ${activatekey}, ${isactive}, ${createdon}, ${profileimageurl}, ${ismoderator})';
+    let query = 'insert into icouserprofile(name,email,password,isinvestor,activatekey,isactive,createdon,profileimageurl,ismoderator,ispresenter) values (${name}, ${email}, ${password},${isinvestor}, ${activatekey}, ${isactive}, ${createdon}, ${profileimageurl}, ${ismoderator}, ${ispresenter})';
     db.none(query, req.body)
         .then(function () {
             db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
@@ -272,7 +274,7 @@ function putIcoUserProfile(req, res, next) {
     var userData = db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
         .then(function (data) {
             if (data.length > 0) {
-                let query = 'update icouserprofile set isinvestor = ${isinvestor},profileimageurl = ${profileimageurl},location = ${location},bio = ${bio},investmentfocus = ${investmentfocus},averagenoofinvestment = ${averagenoofinvestment},averageinvestmentsizeperyear = ${averageinvestmentsizeperyear},title = ${title},ismoderator = ${ismoderator} where id =  ${id}'
+                let query = 'update icouserprofile set isinvestor = ${isinvestor},profileimageurl = ${profileimageurl},location = ${location},bio = ${bio},ispresenter = ${ispresenter},investmentfocus = ${investmentfocus},averagenoofinvestment = ${averagenoofinvestment},averageinvestmentsizeperyear = ${averageinvestmentsizeperyear},title = ${title},ismoderator = ${ismoderator} where id =  ${id}'
                 db.none(query, req.body)
                     .then(function () {
                         db.any("SELECT * FROM icouserprofile WHERE email = $1", req.body.email)
